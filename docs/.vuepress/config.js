@@ -134,6 +134,8 @@ module.exports = {
     // 备案号
     record: '豫ICP备19035192号',
     recordLink: 'http://www.beian.miit.gov.cn/',
+    cyberSecurityRecord: '豫公网安备41172602000151号',
+    cyberSecurityLink: 'http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=41172602000151',
     // 项目开始时间
     startYear: '2019',
     /**

@@ -46,7 +46,6 @@ categories:
     >相比之下，v-show 就简单的多，不管初始条件是什么，元素总是会被渲染，并且只是简单的基于CSS进行切换。  
     >一般来说，v-if 有更高的切换开销，而v-show有更高的初始渲染开销。  
     >因此，如果需要非常频繁地切换，则使用v-show较好；如果在运行时条件甚少改变，则使用v-if较好
-  - `v-bind`：绑定标签上的属性（内置属性和自定义属性）简写为 `:`
   - `v-on`:原生事件名 = '函数名'  简写为 `@`  
     `Vue.js` 为 `v-on` 提供了事件修饰符
     ```html
@@ -81,32 +80,64 @@ categories:
     这其中包含 `event.preventDefault()` 的情况  -->
     <div v-on:scroll.passive="onScroll">...</div>
     ```
-- 使用`v-bind`绑定class和style
-  - 操作元素的 class 列表和内联样式是数据绑定的一个常见需求
-  - 在将 `v-bind` 用于 `class` 和 `style` 时, 表达式结果的类型除了字符串之外，还可以是对象或数组。
-  - 当在一个自定义组件上使用 class 属性时，这些 class 将被添加到该组件的根元素上面。这个元素上已经存在的 class 不会被覆盖。
-  - 当 `v-bind:style` 使用需要添加`浏览器引擎前缀`的 CSS 属性时，如 `transform`，`Vue.js` 会自动侦测并添加相应的前缀。
-  - 从 2.3.0 起你可以为 style 绑定中的属性提供一个包含多个值的数组，常用于提供多个带前缀的值
-  ```javascript
-  // 绑定HTML class
+  - `v-bind`：绑定标签上的属性（内置属性和自定义属性）简写为 `:`  
+    使用`v-bind`绑定class和style
+    - 操作元素的 class 列表和内联样式是数据绑定的一个常见需求
+    - 在将 `v-bind` 用于 `class` 和 `style` 时, 表达式结果的类型除了字符串之外，还可以是对象或数组。
+    - 当在一个自定义组件上使用 class 属性时，这些 class 将被添加到该组件的根元素上面。这个元素上已经存在的 class 不会被覆盖。
+    - 当 `v-bind:style` 使用需要添加`浏览器引擎前缀`的 CSS 属性时，如 `transform`，`Vue.js` 会自动侦测并添加相应的前缀。
+    - 从 2.3.0 起你可以为 style 绑定中的属性提供一个包含多个值的数组，常用于提供多个带前缀的值
+    ```javascript
+    // 绑定HTML class
 
-  // 对象语法
-  <div v-bind:class="{ active: isActive, 'text-danger': hasError }"></div>
-  // 数组语法
-  <div v-bind:class="[activeClass, errorClass]"></div>
-  // 使用三元表达式切换样式
-  <div v-bind:class="[isActive ? activeClass : '', errorClass]"></div>
+    // 对象语法
+    <div v-bind:class="{ active: isActive, 'text-danger': hasError }"></div>
+    // 数组语法
+    <div v-bind:class="[activeClass, errorClass]"></div>
+    // 使用三元表达式切换样式
+    <div v-bind:class="[isActive ? activeClass : '', errorClass]"></div>
 
-  // 绑定内联样式
+    // 绑定内联样式
 
-  // 对象语法
-  <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
-  // 数组语法 （将多个样式对象应用到同一个元素上）
-  <div v-bind:style="[baseStyles, overridingStyles]"></div>
-  // 多重值 （只会渲染数组中最后一个被浏览器支持的值。在本例中，如果浏览器支持不带浏览器前缀的 flexbox，那么就只会渲染 display: flex。）
-  <div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
-  ```
-
+    // 对象语法
+    <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+    // 数组语法 （将多个样式对象应用到同一个元素上）
+    <div v-bind:style="[baseStyles, overridingStyles]"></div>
+    // 多重值 （只会渲染数组中最后一个被浏览器支持的值。在本例中，如果浏览器支持不带浏览器前缀的 flexbox，那么就只会渲染 display: flex。）
+    <div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
+    ```
+  - `v-for`
+    - 基于一个数组来渲染一个列表 `v-for="(item, index) in items"`
+    - 也可以用`of`来代替`in`, 这样更接近Javascripe迭代器的语法
+    - 遍历一个对象的属性 `v-for="(value, name) in object"`
+    - 在遍历对象时，会按 Object.keys() 的结果遍历，但是不能保证它的结果在不同的 JavaScript 引擎下都一致。
+    - 建议尽可能在使用 `v-for` 时提供 key attribute, 以便跟踪每个节点的身份，从而重用和重新排序现有元素
+    - 不要使用对象或数组之类的非基本类型值作为 v-for 的 key。请用字符串或数值类型的值。
+    - 数组更新检测
+      - Vue 将被侦听的数组的变异方法进行了包裹，所以它们也将会触发视图更新
+      - 当使用非变异方法时，可以用新数组替换旧数组
+      - Vue不能检测通过索引和数组长度导致的数组的变动解决办法如下
+      ```javascript
+      // 解决无法检测通过索引设置数组项
+      Vue.set(vm.items, indexOfItem, newValue)
+      // 或者
+      vm.items.splice(indexOfItem, 1, newValue)
+      // 解决无法检测修改数组长度
+      vm.items.splice(newLength)
+      ```
+    - 对象更新检测
+      - Vue 不能检测对象属性的添加或删除
+      - 对于已经创建的实例，Vue 不允许动态添加根级别的响应式属性。但是，可以使用 `Vue.set(object, propertyName, value)` 方法向嵌套对象添加响应式属性。
+      - 为已有对象赋值多个新属性应该用新属性创建一个新对象赋给已有对象
+        ```javascript
+        vm.userProfile = Object.assign({}, vm.userProfile, {
+          age: 27,
+          favoriteColor: 'Vue Green'
+        })
+        ```
+    - 过滤和排序数组
+      - 通过计算属性 `v-for="n in computedEvenNumbers"`
+      - 通过方法 `v-for="n in getEvenNumbers(numbers)`
 ## 计算属性
 
 ### 使用场景
