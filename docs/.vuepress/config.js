@@ -18,12 +18,6 @@ module.exports = {
   themeConfig: {
     type: 'blog',
     huawei: false,
-    themePicker: {
-      colorName1: '#0033FF', // 极浓海蓝
-      colorName2: '#8B00FF', // 紫罗兰色
-      colorName3: '#00BFFF', // 深天蓝
-      colorName4: '#FF8C00' // 暗橙
-    },
     nav: [
       { text: 'Home', link: '/', icon: 'reco-home' },
       { text: 'Notes', link: '/note/', icon: 'reco-document' },
