@@ -1,5 +1,6 @@
 module.exports = {
   dest: 'blog',
+  theme: 'reco',
   title: "latte and cat",
   description: 'study programs and record life',
   head: [
@@ -14,7 +15,6 @@ module.exports = {
     ['meta', { name: 'msapplication-TileImage', content: '/icons/LatteAndCat.png' }],
     ['meta', { name: 'msapplication-TileColor', content: '#000000' }]
   ],
-  // theme: 'reco',
   themeConfig: {
     type: 'blog',
     huawei: false,
@@ -99,7 +99,8 @@ module.exports = {
           title: 'Vue.js',
           collapsable: true,
           children: [
-            'Vue/Vue基础笔记'
+            'Vue/Vue基础笔记',
+            'Vue/Vue组件'
           ]
         },
         {
@@ -147,7 +148,6 @@ module.exports = {
     lineNumbers: true
   },
   plugins: [
-    'flowchart',
     [
       require('./plugins/KanBanNiang'),
       {
